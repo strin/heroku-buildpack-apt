@@ -77,6 +77,7 @@ export INCLUDE_PATH="\$HOME/.apt/usr/include:\$INCLUDE_PATH"
 export CPATH="\$INCLUDE_PATH"
 export CPPPATH="\$INCLUDE_PATH"
 export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
+alias pdf2htmlEX="pdf2htmlEX --data-dir \$HOME/.apt/usr/share/pdf2htmlEX"
 EOF
 
 export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
@@ -89,3 +90,10 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 
 #give environment to later buildpacks
 export | grep -E -e ' (PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPPATH|PKG_CONFIG_PATH)='  > "$LP_DIR/export"
+
+# a patch to fix missing pdf.js and unknown data-dir for pdf2htmlEX.
+wget https://github.com/mozilla/pdf.js/releases/download/v1.4.20/pdfjs-1.4.20-dist.zip
+unzip pdfjs-1.4.20-dist.zip
+mv web pdf.js
+cp -r pdf.js $BUILD_DIR/.apt/usr/share/
+
